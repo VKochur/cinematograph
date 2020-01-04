@@ -108,4 +108,18 @@ public class MovieTest {
         assertNull(movie.getOwner());
         assertFalse(user.getAddedMoviesByUser().contains(movie));
     }
+
+    @Test
+    public void addAndRemoveTag() {
+        Movie movie = new Movie();
+        Tag tag = new Tag();
+        movie.addTag(tag);
+        movie.addTag(tag);
+        assertEquals(1, movie.getTags().size());
+        assertTrue(tag.getMovies().contains(movie));
+        movie.removeTag(tag);
+        assertTrue(movie.getTags().isEmpty());
+        assertTrue(tag.getMovies().isEmpty());
+    }
+
 }

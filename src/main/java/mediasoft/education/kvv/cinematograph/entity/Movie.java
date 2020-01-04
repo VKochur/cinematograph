@@ -29,9 +29,13 @@ public class Movie implements Serializable {
     @ManyToOne
     private User owner;
 
+    @ManyToMany
+    private List<Tag> tags;
+
     public Movie() {
         comments = new LinkedList<>();
         actors = new LinkedList<>();
+        tags = new LinkedList<>();
     }
 
     public Long getId() {
@@ -139,5 +143,31 @@ public class Movie implements Serializable {
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    public void addTag(Tag tag) {
+        if (tags.contains(tag)) {
+            return;
+        } else {
+            tags.add(tag);
+            tag.addMovie(this);
+        }
+    }
+
+    public void removeTag(Tag tag) {
+        if (!tags.contains(tag)) {
+            return;
+        } else {
+            tags.remove(tag);
+            tag.removeMovie(this);
+        }
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 }
