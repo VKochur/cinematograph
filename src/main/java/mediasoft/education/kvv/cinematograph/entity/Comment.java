@@ -3,6 +3,7 @@ package mediasoft.education.kvv.cinematograph.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,6 +30,10 @@ public class Comment implements Serializable {
 
     @OneToMany
     private List<Comment> children;
+
+    public Comment() {
+        children = new LinkedList<>();
+    }
 
     public Long getId() {
         return id;
@@ -108,8 +113,11 @@ public class Comment implements Serializable {
         if (Objects.equals(parent, parentComment)) {
             return;
         } else {
+            if (parent != null) {
+                parent.removeChild(this);
+            }
             parent = parentComment;
-            parentComment.addChild(this);
+            parent.addChild(this);
         }
     }
 
@@ -141,6 +149,7 @@ public class Comment implements Serializable {
         if (Objects.equals(owner, user)) {
             return;
         } else {
+            removeOwner();
             owner = user;
             user.addComment(this);
         }
