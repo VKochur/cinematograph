@@ -23,7 +23,10 @@ public class Movie implements Serializable {
     @OneToMany
     private List<Comment> comments;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinTable(name = "movie_actor_relations",
+            joinColumns = @JoinColumn(name = "movie_id"),
+    inverseJoinColumns = @JoinColumn(name = "actor_id"))
     private List<Actor> actors;
 
     @ManyToOne
@@ -169,5 +172,15 @@ public class Movie implements Serializable {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", url='" + url + '\'' +
+                ", count actors = " + actors.size() + "}";
     }
 }

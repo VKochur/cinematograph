@@ -17,7 +17,9 @@ public class Actor implements Serializable {
 
     private String infoUrl;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "actors",
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+    fetch = FetchType.LAZY)
     private List<Movie> movies;
 
     public Actor() {
@@ -73,5 +75,14 @@ public class Actor implements Serializable {
             movies.remove(movie);
             movie.removeActor(this);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Actor{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", infoUrl='" + infoUrl + '\'' +
+                ", movies's count = " + movies.size() + " }'";
     }
 }
