@@ -5,6 +5,7 @@
         <jta-data-source>java:/cinematographDataSourse</jta-data-source>
 
         <class>mediasoft.education.kvv.cinematograph.entity.Movie</class>
+        <class>mediasoft.education.kvv.cinematograph.entity.Actor</class>
 
         <properties>
             <property name="hibernate.show_sql" value="true"/>

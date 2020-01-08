@@ -1,60 +1,55 @@
 package mediasoft.education.kvv.cinematograph.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
-@Entity
+@Entity(name = "Movie")
 @Table(name = "movies")
 public class Movie implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+   // @NotNull
+    @Column(nullable = false)
     private String name;
 
     private String description;
 
+   // @NotNull
+   // @Column(nullable = false)
     private String url;
 
     @OneToMany
-    private List<Comment> comments;
+    private List<Comment> comments = new LinkedList<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(name = "movie_actor_relations",
             joinColumns = @JoinColumn(name = "movie_id"),
     inverseJoinColumns = @JoinColumn(name = "actor_id"))
-    private List<Actor> actors;
+    private Set<Actor> actors = new HashSet<>();
 
     @ManyToOne
     private User owner;
 
     @ManyToMany
-    private List<Tag> tags;
+    private List<Tag> tags = new LinkedList<>();
 
-    public Movie() {
-        comments = new LinkedList<>();
-        actors = new LinkedList<>();
-        tags = new LinkedList<>();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Movie otherMovie = (Movie) o;
+
+        return  (id != null) && (id.equals(otherMovie.getId()));
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public int hashCode() {
+        return 31;
     }
 
     public void addComment(Comment comment) {
@@ -93,22 +88,6 @@ public class Movie implements Serializable {
         }
     }
 
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public List<Actor> getActors() {
-        return actors;
-    }
-
-    public void setActors(List<Actor> actors) {
-        this.actors = actors;
-    }
-
     public void updateOwner(User user) {
         if (!Objects.equals(owner, user)) {
             removeOwner();
@@ -123,6 +102,67 @@ public class Movie implements Serializable {
             owner = null;
         }
     }
+
+    public void addTag(Tag tag) {
+        if (tags.contains(tag)) {
+            return;
+        } else {
+            tags.add(tag);
+            tag.addMovie(this);
+        }
+    }
+
+    public void removeTag(Tag tag) {
+        if (!tags.contains(tag)) {
+            return;
+        } else {
+            tags.remove(tag);
+            tag.removeMovie(this);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", url='" + url + '\'' + "}";
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public Set<Actor> getActors() {
+        return actors;
+    }
+
+    public void setActors(Set<Actor> actors) {
+        this.actors = actors;
+    }
+
 
     public String getDescription() {
         return description;
@@ -148,24 +188,6 @@ public class Movie implements Serializable {
         this.owner = owner;
     }
 
-    public void addTag(Tag tag) {
-        if (tags.contains(tag)) {
-            return;
-        } else {
-            tags.add(tag);
-            tag.addMovie(this);
-        }
-    }
-
-    public void removeTag(Tag tag) {
-        if (!tags.contains(tag)) {
-            return;
-        } else {
-            tags.remove(tag);
-            tag.removeMovie(this);
-        }
-    }
-
     public List<Tag> getTags() {
         return tags;
     }
@@ -174,13 +196,5 @@ public class Movie implements Serializable {
         this.tags = tags;
     }
 
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", url='" + url + '\'' + "}";
-                //+ ", count actors = " + actors.size() + "}";
-    }
+
 }

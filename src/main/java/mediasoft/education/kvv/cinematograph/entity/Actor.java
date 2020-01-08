@@ -2,15 +2,16 @@ package mediasoft.education.kvv.cinematograph.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
+import java.lang.reflect.GenericArrayType;
+import java.util.HashSet;
+import java.util.Set;
 
-@Entity
+@Entity(name = "Actor")
 @Table(name = "actors")
 public class Actor implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
@@ -20,10 +21,46 @@ public class Actor implements Serializable {
     @ManyToMany(mappedBy = "actors",
             cascade = {CascadeType.PERSIST, CascadeType.MERGE},
             fetch = FetchType.LAZY)
-    private List<Movie> movies;
+    private Set<Movie> movies = new HashSet<>();
 
-    public Actor() {
-        movies = new LinkedList<>();
+    public void addMovies(Movie movie) {
+        if (movies.contains(movie)) {
+            return;
+        } else {
+            movies.add(movie);
+            movie.addActor(this);
+        }
+    }
+
+    public void removeMovie(Movie movie) {
+        if (!movies.contains(movie)) {
+            return;
+        } else {
+            movies.remove(movie);
+            movie.removeActor(this);
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Actor)) return false;
+        Actor otherActor = (Actor) o;
+
+        return (id != null) && id.equals(otherActor.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
+    }
+
+    @Override
+    public String toString() {
+        return "Actor{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", infoUrl='" + infoUrl + '\'' + "}";
     }
 
     public Long getId() {
@@ -50,39 +87,12 @@ public class Actor implements Serializable {
         this.infoUrl = infoUrl;
     }
 
-    public List<Movie> getMovies() {
+    public Set<Movie> getMovies() {
         return movies;
     }
 
-    public void setMovies(List<Movie> movies) {
+    public void setMovies(Set<Movie> movies) {
         this.movies = movies;
     }
 
-
-    public void addMovies(Movie movie) {
-        if (movies.contains(movie)) {
-            return;
-        } else {
-            movies.add(movie);
-            movie.addActor(this);
-        }
-    }
-
-    public void removeMovie(Movie movie) {
-        if (!movies.contains(movie)) {
-            return;
-        } else {
-            movies.remove(movie);
-            movie.removeActor(this);
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "Actor{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", infoUrl='" + infoUrl + '\'' + "}";
-        //+", movies's count = " + movies.size() + " }'";
-    }
 }
