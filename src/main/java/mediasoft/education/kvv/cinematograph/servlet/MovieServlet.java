@@ -6,6 +6,8 @@ import mediasoft.education.kvv.cinematograph.service.ActorService;
 import mediasoft.education.kvv.cinematograph.service.MovieService;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @WebServlet(name = "HelloMovie", urlPatterns = "/movie")
@@ -23,6 +26,9 @@ public class MovieServlet extends HttpServlet {
 
     @Inject
     private ActorService actorService;
+
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -39,48 +45,34 @@ public class MovieServlet extends HttpServlet {
         Movie movie1 = movieService.create(movie);
         stringBuilder.append("movie1: ").append(movie.toString()).append("\n");
         stringBuilder.append("movie1's actors: ").append(movie.getActors().toString()).append("\n");
+        stringBuilder.append("existed in db? movie1 from db by id: ").append(movieService.getById(movie1.getId())).append("\n");
 
         stringBuilder.append("\ncreate new movie without actors\n");
         Movie movie2 = movieService.create(movie());
         stringBuilder.append("movie2: ").append(movie2.toString()).append("\n");
-        stringBuilder.append("create new actor without movie");
+        stringBuilder.append("create new actor without movie\n");
         Actor actor = actorService.create(actor());
         stringBuilder.append("actor: ").append(actor.toString()).append("\n");
         movie2.addActor(actor);
 
-        stringBuilder.append("\nadd into existed movie existed actor");
+        stringBuilder.append("\nadd into existed movie existed actor\n");
         movieService.update(movie2);
-        stringBuilder.append("movie2: ").append(movie2.toString()).append("\n");
+        movieService.update(movie2);
+        Movie movie2ById = movieService.getById(movie2.getId());
+        stringBuilder.append("movie2ById = by id movie2: ").append(movie2ById.toString()).append("\n");
+        List<Actor> actors = movie2ById.getActors();
+        stringBuilder.append("actors: " + actors.toString()).append("\n");
 
-        stringBuilder.append("\nadd into existed actor existed movie");
-        stringBuilder.append("movie1: ").append(movie.toString()).append("\n");
-        stringBuilder.append("movie1's actors: ").append(movie.getActors().toString()).append("\n");
-
-        stringBuilder.append("\nfind movie by id");
-        Movie byId = movieService.getById(movie1.getId());
-        stringBuilder.append("movies by id = movie1.id: ").append(byId.toString()).append("\n");
-        stringBuilder.append("try get byId's actors: ");
+        stringBuilder.append("\ndelete movie by id: movie2.id");
+        stringBuilder.append("\nsearch: " + movieService.getById(movie2.getId()));
+        stringBuilder.append("\ndelete " + movieService.deleteById(movie2.getId()));
         try {
-            stringBuilder.append(byId.getActors().toString());
-        } catch (Exception e) {
-            stringBuilder.append("Excp:").append(e.getMessage());
+            stringBuilder.append("\nrepeat search: " + movieService.getById(movie2.getId()));
+        } catch (Exception e)
+        {
+            stringBuilder.append(e.getMessage());
         }
-
-        stringBuilder.append("\nfind all movies");
-        movieService.findAll().forEach((movieCur) ->stringBuilder.append(movieCur.toString()).append("\n"));
-
-        stringBuilder.append("\nfind all actors");
-        actorService.findAll().forEach((actorCur) ->stringBuilder.append(actorCur.toString()).append("\n"));
-
-
-        stringBuilder.append("\ndelete movie by id: movie1.id");
-        movieService.deleteById(movie1.getId());
-
-        stringBuilder.append("\nafter delete movie1 find all movies");
-        movieService.findAll().forEach((movieCur) ->stringBuilder.append(movieCur.toString()).append("\n"));
-
-        stringBuilder.append("\nafter delete movie1 find all actors");
-        actorService.findAll().forEach((actorCur) ->stringBuilder.append(actorCur.toString()).append("\n"));
+        stringBuilder.append("\n" + actorService.findAll().toString());
 
         ServletOutputStream outputStream = resp.getOutputStream();
         outputStream.println(stringBuilder.toString());

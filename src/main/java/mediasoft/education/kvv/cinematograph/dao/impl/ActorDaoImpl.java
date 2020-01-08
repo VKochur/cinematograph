@@ -9,10 +9,6 @@ import javax.ejb.Stateless;
 public class ActorDaoImpl extends BasicDaoImpl<Actor> implements ActorDao {
 
     public ActorDaoImpl() {
-        this(Actor.class);
-    }
-
-    public ActorDaoImpl(Class<Actor> entityClass) {
-        super(entityClass);
+        super(Actor.class);
     }
 }

@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.List;
 
-
+@Transactional
 @Stateless
 public class MovieServiceImpl implements MovieService {
 
@@ -26,16 +26,18 @@ public class MovieServiceImpl implements MovieService {
         return movieDao.update(movie);
     }
 
-    @Transactional
     @Override
     public Movie getById(Long id) {
         Movie byId = movieDao.getById(id);
-        //get actors
-        byId.getActors().size();
-        return byId;
+        if (byId != null) {
+            //get actors
+            byId.getActors().size();
+            return byId;
+        } else {
+            throw new IllegalArgumentException("not found movie by id = " + id);
+        }
     }
 
-    @Transactional
     @Override
     public List<Movie> findAll() {
         List<Movie> list = movieDao.getList();
@@ -46,6 +48,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie deleteById(Long id) {
-        return movieDao.getById(id);
+        Movie byId = this.getById(id);
+        return movieDao.delete(byId);
     }
 }

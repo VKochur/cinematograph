@@ -180,7 +180,7 @@ public class Movie implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", url='" + url + '\'' +
-                ", count actors = " + actors.size() + "}";
+                ", url='" + url + '\'' + "}";
+                //+ ", count actors = " + actors.size() + "}";
     }
 }

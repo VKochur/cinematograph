@@ -19,7 +19,7 @@ public class Actor implements Serializable {
 
     @ManyToMany(mappedBy = "actors",
             cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-    fetch = FetchType.LAZY)
+            fetch = FetchType.LAZY)
     private List<Movie> movies;
 
     public Actor() {
@@ -82,7 +82,7 @@ public class Actor implements Serializable {
         return "Actor{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", infoUrl='" + infoUrl + '\'' +
-                ", movies's count = " + movies.size() + " }'";
+                ", infoUrl='" + infoUrl + '\'' + "}";
+        //+", movies's count = " + movies.size() + " }'";
     }
 }
