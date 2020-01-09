@@ -23,7 +23,7 @@ public class Movie implements Serializable {
    // @Column(nullable = false)
     private String url;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "movie", orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Comment> comments = new LinkedList<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
@@ -36,7 +36,7 @@ public class Movie implements Serializable {
     private User owner;
 
     @ManyToMany
-    private List<Tag> tags = new LinkedList<>();
+    private Set<Tag> tags = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
@@ -188,13 +188,12 @@ public class Movie implements Serializable {
         this.owner = owner;
     }
 
-    public List<Tag> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
-
 
 }

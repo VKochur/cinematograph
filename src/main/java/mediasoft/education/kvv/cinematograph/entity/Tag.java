@@ -2,8 +2,7 @@ package mediasoft.education.kvv.cinematograph.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "tags")
@@ -13,13 +12,14 @@ public class Tag implements Serializable {
     @GeneratedValue
     private Long id;
 
+    @Column(unique = true, updatable = false)
     private String name;
 
     @ManyToMany
-    private List<Movie> movies;
+    private Set<Movie> movies;
 
     public Tag() {
-        movies = new LinkedList<>();
+        movies = new HashSet<>();
     }
 
     public void addMovie(Movie movie) {
@@ -40,6 +40,19 @@ public class Tag implements Serializable {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Tag)) return false;
+        Tag tag = (Tag) o;
+        return name.equals(tag.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
+
     public Long getId() {
         return id;
     }
@@ -56,11 +69,11 @@ public class Tag implements Serializable {
         this.name = name;
     }
 
-    public List<Movie> getMovies() {
+    public Set<Movie> getMovies() {
         return movies;
     }
 
-    public void setMovies(List<Movie> movies) {
+    public void setMovies(Set<Movie> movies) {
         this.movies = movies;
     }
 }
