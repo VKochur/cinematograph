@@ -35,9 +35,9 @@ public interface BasicDao<T> {
     T update(T entity);
 
     /**
-     * method for delete entity by specific id
+     * method for delete entity
      *
-     * @param entity for delete
+     * @param entity deleted
      */
     T delete(T entity);
 }

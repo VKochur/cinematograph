@@ -15,11 +15,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Set;
 import java.util.UUID;
 
-@WebServlet(name = "HelloMovie", urlPatterns = "/movie")
-public class MovieServlet extends HttpServlet {
+@WebServlet(name = "HelloMovieComment", urlPatterns = "/movie_actor")
+public class MovieActorServlet extends HttpServlet {
 
     @Inject
     private MovieService movieService;
@@ -32,10 +31,10 @@ public class MovieServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+/*
         StringBuilder stringBuilder = new StringBuilder();
-        try {
-            stringBuilder.append("hello from MovieServlet.\n");
+
+            stringBuilder.append("hello from MovieActorServlet.\n");
             stringBuilder.append("INFO:\n");
 
             Movie movie = movie();
@@ -58,17 +57,21 @@ public class MovieServlet extends HttpServlet {
 
             stringBuilder.append("\nadd into existed movie existed actor\n");
             movieService.update(movie2);
+
+            stringBuilder.append("\n" + movieService.getById(movie2.getId()).getActors());
+
+
             stringBuilder.append("\nadded success");
             movie2.setName("name");
             stringBuilder.append("\nedited name movie2 and try update");
             movieService.update(movie2); //EXCP!
 
-        } catch (Exception e) {
-            stringBuilder.append("\n exception occured: " + e.getMessage());
-        }
+
 
         ServletOutputStream outputStream = resp.getOutputStream();
         outputStream.println(stringBuilder.toString());
+
+ */
     }
 
     private Actor actor() {
@@ -82,6 +85,5 @@ public class MovieServlet extends HttpServlet {
         movie.setName("movie_" + UUID.randomUUID().toString());
         return movie;
     }
-
 
 }
