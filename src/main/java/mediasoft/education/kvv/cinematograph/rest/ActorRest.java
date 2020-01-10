@@ -8,7 +8,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
-@Path("/api/actor")
+@Path("/rest/actor")
 public class ActorRest {
 
     private ActorService actorService;

@@ -1,9 +1,11 @@
 package mediasoft.education.kvv.cinematograph.service.impl;
 
+import mediasoft.education.kvv.cinematograph.dao.ActorDao;
 import mediasoft.education.kvv.cinematograph.dao.MovieDao;
 import mediasoft.education.kvv.cinematograph.dto.CommentDto;
 import mediasoft.education.kvv.cinematograph.dto.MovieDto;
 import mediasoft.education.kvv.cinematograph.dto.mapper.MovieDtoMapper;
+import mediasoft.education.kvv.cinematograph.entity.Actor;
 import mediasoft.education.kvv.cinematograph.entity.Movie;
 import mediasoft.education.kvv.cinematograph.service.MovieService;
 
@@ -23,6 +25,8 @@ public class MovieServiceImpl implements MovieService {
 
     private MovieDtoMapper movieDtoMapper;
 
+    private ActorDao actorDao;
+
     @Inject
     public void setMovieDao(MovieDao movieDao) {
         this.movieDao = movieDao;
@@ -31,6 +35,11 @@ public class MovieServiceImpl implements MovieService {
     @Inject
     public void setMovieDtoMapper(MovieDtoMapper movieDtoMapper) {
         this.movieDtoMapper = movieDtoMapper;
+    }
+
+    @Inject
+    public void setActorDao(ActorDao actorDao) {
+        this.actorDao = actorDao;
     }
 
     @Override
@@ -67,14 +76,43 @@ public class MovieServiceImpl implements MovieService {
         throw new NotSupportedException("not implements yet");
     }
 
+    //todo addActor and removeActor are similar, probably refactoring is available
     @Override
     public MovieDto addActorById(Long existedMovieId, Long existedActorId) {
-        throw new NotSupportedException("not implements yet");
+        System.out.println("-----inter-----");
+        Movie movie = movieDao.getById(existedMovieId);
+        if (movie == null) {
+            throw new NoSuchElementException("not found movie by id = " + existedMovieId);
+        } else {
+            Actor actor = actorDao.getById(existedActorId);
+            if (actor != null) {
+                System.out.println("-----!!!!-----");
+                movie.addActor(actor);
+                System.out.println(movie.toString());
+                System.out.println(movie.getActors().toString());
+            } else {
+                //if actor doesn't exist, do nothing.
+            }
+
+            return movieDtoMapper.getDto(movie);
+        }
     }
 
+    //todo addActor and removeActor are similar, probably refactoring is available
     @Override
     public MovieDto removeActorById(Long existedMovieId, Long existedActorId) {
-        throw new NotSupportedException("not implements yet");
+        Movie movie = movieDao.getById(existedMovieId);
+        if (movie == null) {
+            throw new NoSuchElementException("not found movie by id = " + existedMovieId);
+        } else {
+            Actor actor = actorDao.getById(existedActorId);
+            if (actor != null) {
+                movie.removeActor(actor);
+            } else {
+                //if actor doesn't exist, do nothing.
+            }
+            return movieDtoMapper.getDto(movie);
+        }
     }
 
     @Override
