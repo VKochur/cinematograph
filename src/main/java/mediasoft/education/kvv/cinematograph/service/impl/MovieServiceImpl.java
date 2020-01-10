@@ -52,8 +52,8 @@ public class MovieServiceImpl implements MovieService {
             movieByDb.setName(newData.getName());
             movieByDb.setDescription(newData.getDescription());
             movieByDb.setUrl(newData.getUrl());
-            Movie updatedMovie = movieDao.update(movieByDb);
-            return movieDtoMapper.getDto(updatedMovie);
+            //during transaction => without movieDao.update()
+            return movieDtoMapper.getDto(movieByDb);
         }
     }
 
@@ -93,7 +93,7 @@ public class MovieServiceImpl implements MovieService {
         if (byId != null) {
             return movieDtoMapper.getDto(byId);
         } else {
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("not found movie by id = " + id);
         }
     }
 
