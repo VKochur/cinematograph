@@ -15,7 +15,11 @@ public class Tag implements Serializable {
     @Column(unique = true, updatable = false)
     private String name;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinTable(name = "tag_movie_relations",
+            joinColumns = @JoinColumn(name = "tag_id"),
+            inverseJoinColumns = @JoinColumn(name = "movie_id")
+    )
     private Set<Movie> movies;
 
     public Tag() {

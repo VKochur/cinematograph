@@ -13,14 +13,14 @@ public class Movie implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-   // @NotNull
+    // @NotNull
     @Column(nullable = false)
     private String name;
 
     private String description;
 
-   // @NotNull
-   // @Column(nullable = false)
+    // @NotNull
+    // @Column(nullable = false)
     private String url;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "movie", orphanRemoval = true, fetch = FetchType.LAZY)
@@ -29,13 +29,13 @@ public class Movie implements Serializable {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(name = "movie_actor_relations",
             joinColumns = @JoinColumn(name = "movie_id"),
-    inverseJoinColumns = @JoinColumn(name = "actor_id"))
+            inverseJoinColumns = @JoinColumn(name = "actor_id"))
     private Set<Actor> actors = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne()
     private User owner;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY, mappedBy = "movies")
     private Set<Tag> tags = new HashSet<>();
 
     @Override
@@ -44,7 +44,7 @@ public class Movie implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Movie otherMovie = (Movie) o;
 
-        return  (id != null) && (id.equals(otherMovie.getId()));
+        return (id != null) && (id.equals(otherMovie.getId()));
     }
 
     @Override

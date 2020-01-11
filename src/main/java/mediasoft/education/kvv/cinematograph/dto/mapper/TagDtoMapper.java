@@ -10,14 +10,22 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Stateless
-public class TagDtoMapper {
+public class TagDtoMapper implements DtoMapper<Tag, TagDto> {
 
+    //@Override
     public TagDto getDto(Tag tag) {
         TagDto tagDto = new TagDto();
         tagDto.setId(tag.getId());
         tagDto.setName(tag.getName());
         tagDto.setMovies(defineMoviesDto(tag.getMovies()));
         return tagDto;
+    }
+
+    //@Override
+    public Tag getEntityForCreation(TagDto dataForCreateNewEntity) {
+        Tag tagForCreation = new Tag();
+        tagForCreation.setName(dataForCreateNewEntity.getName());
+        return tagForCreation;
     }
 
     private Set<MovieDto> defineMoviesDto(Set<Movie> movies) {
