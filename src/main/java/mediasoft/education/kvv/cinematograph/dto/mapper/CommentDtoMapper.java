@@ -10,8 +10,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Stateless
-public class CommentDtoMapper {
+public class CommentDtoMapper implements DtoMapper<Comment, CommentDto>{
 
+    @Override
     public CommentDto getDto(Comment comment) {
         CommentDto commentDto = new CommentDto();
         commentDto.setId(comment.getId());
@@ -39,6 +40,13 @@ public class CommentDtoMapper {
 
         commentDto.setChildren(defineCommentDto(comment.getChildren()));
         return commentDto;
+    }
+
+    @Override
+    public Comment getEntityForCreation(CommentDto dataForCreateNewEntity) {
+        Comment comment = new Comment();
+        comment.setText(dataForCreateNewEntity.getText());
+        return comment;
     }
 
     private List<CommentDto> defineCommentDto(List<Comment> children) {

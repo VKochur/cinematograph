@@ -12,7 +12,7 @@ import java.util.Set;
 @Stateless
 public class TagDtoMapper implements DtoMapper<Tag, TagDto> {
 
-    //@Override
+    @Override
     public TagDto getDto(Tag tag) {
         TagDto tagDto = new TagDto();
         tagDto.setId(tag.getId());
@@ -21,7 +21,7 @@ public class TagDtoMapper implements DtoMapper<Tag, TagDto> {
         return tagDto;
     }
 
-    //@Override
+    @Override
     public Tag getEntityForCreation(TagDto dataForCreateNewEntity) {
         Tag tagForCreation = new Tag();
         tagForCreation.setName(dataForCreateNewEntity.getName());
