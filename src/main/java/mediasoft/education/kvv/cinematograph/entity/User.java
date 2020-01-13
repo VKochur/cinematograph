@@ -10,6 +10,7 @@ import java.util.List;
 public class User implements Serializable {
 
     @Id
+    @GeneratedValue
     private Long id;
 
     private String login;

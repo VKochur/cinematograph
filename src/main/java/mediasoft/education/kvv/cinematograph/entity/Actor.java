@@ -11,11 +11,12 @@ import java.util.Set;
 public class Actor implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Long id;
 
     private String name;
 
+    @Column(name = "info_url")
     private String infoUrl;
 
     @ManyToMany(mappedBy = "actors",

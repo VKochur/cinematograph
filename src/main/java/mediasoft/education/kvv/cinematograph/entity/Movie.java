@@ -10,7 +10,7 @@ import java.util.*;
 public class Movie implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Long id;
 
     // @NotNull
