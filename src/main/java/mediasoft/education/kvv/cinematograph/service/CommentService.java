@@ -15,4 +15,12 @@ public interface CommentService {
     List<CommentDto> findAll();
 
     CommentDto updateInfo(Long id, CommentDto newData);
+
+    /**
+     * add comment to current comment
+     * @param idExistedComment id parent comment
+     * @param commentDtoForCreation data for creation new child comment
+     * @return created comment's dto
+     */
+    CommentDto addComment(Long  idExistedComment, CommentDto commentDtoForCreation);
 }

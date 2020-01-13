@@ -1,9 +1,5 @@
 package mediasoft.education.kvv.cinematograph.dto;
 
-import mediasoft.education.kvv.cinematograph.entity.Comment;
-import mediasoft.education.kvv.cinematograph.entity.Movie;
-import mediasoft.education.kvv.cinematograph.entity.User;
-
 import java.time.LocalDateTime;
 import java.util.List;
 

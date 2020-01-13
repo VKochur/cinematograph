@@ -41,6 +41,7 @@ public class CommentServiceImpl implements CommentService {
 
     /**
      * implements doesn't use basicService, because need to set time
+     *
      * @param dataForCreate
      * @return
      */
@@ -77,6 +78,19 @@ public class CommentServiceImpl implements CommentService {
             byId.setText(newData.getText());
             byId.setDateTime(LocalDateTime.now());
             return commentDtoMapper.getDto(byId);
+        }
+    }
+
+    @Override
+    public CommentDto addComment(Long idParentComment, CommentDto commentDtoForCreation) {
+        Comment byId = commentDao.getById(idParentComment);
+        if (byId == null) {
+            throw new NoSuchElementException("not found comment by id = " + idParentComment);
+        } else {
+            Comment entityForCreation = commentDtoMapper.getEntityForCreation(commentDtoForCreation);
+            Comment createdComment = commentDao.create(entityForCreation);
+            byId.addChild(createdComment);
+            return commentDtoMapper.getDto(createdComment);
         }
     }
 }
