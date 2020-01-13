@@ -32,7 +32,7 @@ public class Movie implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "actor_id"))
     private Set<Actor> actors = new HashSet<>();
 
-    @ManyToOne()
+    @ManyToOne
     private User owner;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY, mappedBy = "movies")
@@ -52,21 +52,33 @@ public class Movie implements Serializable {
         return 31;
     }
 
-    public void addComment(Comment comment) {
+    /**
+     *
+     * @param comment
+     * @return true if added, false not
+     */
+    public boolean addComment(Comment comment) {
         if (comments.contains(comment)) {
-            return;
+            return false;
         } else {
             comments.add(comment);
             comment.updateMovie(this);
+            return true;
         }
     }
 
-    public void removeComment(Comment comment) {
+    /**
+     *
+     * @param comment
+     * @return true if removed, false not
+     */
+    public boolean removeComment(Comment comment) {
         if (!comments.contains(comment)) {
-            return;
+            return false;
         } else {
             comments.remove(comment);
             comment.removeMovie();
+            return true;
         }
     }
 

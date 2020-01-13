@@ -28,7 +28,7 @@ public class Comment implements Serializable {
     @ManyToOne
     private Comment parent;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parent", orphanRemoval = true)
     private List<Comment> children;
 
     public Comment() {

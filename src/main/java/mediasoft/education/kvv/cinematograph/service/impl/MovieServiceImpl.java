@@ -1,12 +1,16 @@
 package mediasoft.education.kvv.cinematograph.service.impl;
 
 import mediasoft.education.kvv.cinematograph.dao.ActorDao;
+import mediasoft.education.kvv.cinematograph.dao.CommentDao;
 import mediasoft.education.kvv.cinematograph.dao.MovieDao;
 import mediasoft.education.kvv.cinematograph.dto.CommentDto;
 import mediasoft.education.kvv.cinematograph.dto.MovieDto;
+import mediasoft.education.kvv.cinematograph.dto.mapper.DtoMapper;
 import mediasoft.education.kvv.cinematograph.dto.mapper.MovieDtoMapper;
 import mediasoft.education.kvv.cinematograph.entity.Actor;
+import mediasoft.education.kvv.cinematograph.entity.Comment;
 import mediasoft.education.kvv.cinematograph.entity.Movie;
+import mediasoft.education.kvv.cinematograph.service.CommentService;
 import mediasoft.education.kvv.cinematograph.service.MovieService;
 
 import javax.ejb.Stateless;
@@ -27,6 +31,12 @@ public class MovieServiceImpl implements MovieService {
 
     private ActorDao actorDao;
 
+    private CommentService commentService;
+
+    private CommentDao commentDao;
+
+    private DtoMapper<Comment, CommentDto> commentDtoMapper;
+
     @Inject
     public void setMovieDao(MovieDao movieDao) {
         this.movieDao = movieDao;
@@ -40,6 +50,21 @@ public class MovieServiceImpl implements MovieService {
     @Inject
     public void setActorDao(ActorDao actorDao) {
         this.actorDao = actorDao;
+    }
+
+    @Inject
+    public void setCommentService(CommentService commentService) {
+        this.commentService = commentService;
+    }
+
+    @Inject
+    public void setCommentDao(CommentDao commentDao) {
+        this.commentDao = commentDao;
+    }
+
+    @Inject
+    public void setCommentDtoMapper(DtoMapper<Comment, CommentDto> commentDtoMapper) {
+        this.commentDtoMapper = commentDtoMapper;
     }
 
     @Override
@@ -67,13 +92,31 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieDto addComment(Long existedMovieId, CommentDto commentDto) {
-        throw new NotSupportedException("not implements yet");
+    public CommentDto addComment(Long existedMovieId, CommentDto infoForCreationComment) {
+        Movie movieById = movieDao.getById(existedMovieId);
+        if (movieById == null) {
+            throw new NoSuchElementException("not found movie by id = " + existedMovieId);
+        } else {
+            Long createdCommentId = commentService.create(infoForCreationComment).getId();
+            Comment createdComment = commentDao.getById(createdCommentId);
+            createdComment.setMovie(movieById);
+            return commentDtoMapper.getDto(createdComment);
+        }
     }
 
     @Override
-    public MovieDto removeCommentById(Long existedMovieId, Long commentId) {
-        throw new NotSupportedException("not implements yet");
+    public CommentDto removeCommentById(Long existedMovieId, Long commentId) {
+        Movie movie = movieDao.getById(existedMovieId);
+        if (movie == null) {
+            throw new NoSuchElementException("not found movie by id = " + existedMovieId);
+        } else {
+            Comment commentForDelete = commentDao.getById(commentId);
+            if (movie.removeComment(commentForDelete)) {
+                 return commentDtoMapper.getDto(commentForDelete);
+            } else {
+                throw new IllegalArgumentException("movie by id = " + existedMovieId + " not contains comment with id = " + commentId);
+            }
+        }
     }
 
     //todo addActor and removeActor are similar, probably refactoring is available

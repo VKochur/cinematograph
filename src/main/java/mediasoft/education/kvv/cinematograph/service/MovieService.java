@@ -28,19 +28,20 @@ public interface MovieService {
      * add comment
      * @param existedMovieId movie's key in db
      * @param commentDto container info about text
-     * @return updated movie
+     * @return created comment's dto
      * @throws NoSuchElementException if movie not existed
      */
-    MovieDto addComment(Long existedMovieId, CommentDto commentDto);
+    CommentDto addComment(Long existedMovieId, CommentDto commentDto);
 
     /**
      * delete comment and sub comments
      * @param existedMovieId movie's key in db.
      * @param commentId comment's key in db.
-     * @return updated movie
+     * @return deleted comment's dto
      * @throws NoSuchElementException if movie not existed
+     * @throws IllegalArgumentException if specific movie doesn't contain specific comment
      */
-    MovieDto removeCommentById(Long existedMovieId, Long commentId);
+    CommentDto removeCommentById(Long existedMovieId, Long commentId);
 
     /**
      * add actor to movie
