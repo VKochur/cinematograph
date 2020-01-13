@@ -2,6 +2,7 @@ package mediasoft.education.kvv.cinematograph;
 
 import mediasoft.education.kvv.cinematograph.dao.MovieDao;
 import mediasoft.education.kvv.cinematograph.entity.Actor;
+import mediasoft.education.kvv.cinematograph.entity.Comment;
 import mediasoft.education.kvv.cinematograph.entity.Movie;
 import mediasoft.education.kvv.cinematograph.entity.Tag;
 
@@ -60,6 +61,19 @@ public class StartupBean {
         createRelation(tags[3], movies[0], movies[1], movies[2], movies[3], movies[4]);
         createRelation(tags[4], movies[5]);
         createRelation(tags[5], movies[3]);
+
+        Comment parentComment = new Comment();
+        parentComment.setText("Отличный фильм!");
+        Comment childComment = new Comment();
+        parentComment.addChild(childComment);
+        childComment.setText("Поддерживаю");
+        Comment grandChild = new Comment();
+        childComment.addChild(grandChild);
+        grandChild.setText("+1");
+        Comment parentComment2 = new Comment();
+        parentComment2.setText("Бриллиантовая рука и костянная нога");
+        movies[0].addComment(parentComment);
+        movies[0].addComment(parentComment2);
 
         createInDb(movies);
     }
