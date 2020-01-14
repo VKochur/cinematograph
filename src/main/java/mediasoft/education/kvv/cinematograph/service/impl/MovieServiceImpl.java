@@ -139,17 +139,13 @@ public class MovieServiceImpl implements MovieService {
     //todo addActor and removeActor are similar, probably refactoring is available
     @Override
     public MovieDto addActorById(Long existedMovieId, Long existedActorId) {
-        System.out.println("-----inter-----");
         Movie movie = movieDao.getById(existedMovieId);
         if (movie == null) {
             throw new NoSuchElementException("not found movie by id = " + existedMovieId);
         } else {
             Actor actor = actorDao.getById(existedActorId);
             if (actor != null) {
-                System.out.println("-----!!!!-----");
                 movie.addActor(actor);
-                System.out.println(movie.toString());
-                System.out.println(movie.getActors().toString());
             } else {
                 //if actor doesn't exist, do nothing.
             }
@@ -250,7 +246,10 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<MovieDto> getByAtLeastOneActor(List<Long> actorIds) {
-        throw new NotSupportedException("not implements yet");
+        List<Movie> byAtLeastOneActor = movieDao.getByAtLeastOneActor(actorIds);
+        List<MovieDto> movieDtos = new LinkedList<>();
+        byAtLeastOneActor.forEach(movie -> movieDtos.add(movieDtoMapper.getDto(movie)));
+        return movieDtos;
     }
 
     @Override

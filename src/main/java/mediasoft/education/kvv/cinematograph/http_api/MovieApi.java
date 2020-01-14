@@ -67,8 +67,16 @@ public class MovieApi {
     @GET
     @Path("/name")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<MovieDto> getMoviesBySimilarName(@QueryParam("value") String name){
+    public List<MovieDto> getMoviesBySimilarName(@QueryParam("value") String name) {
         return movieService.getBySimilarName(name);
+    }
+
+    @PUT
+    @Path("/getByActors")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<MovieDto> getMoviesByActors(List<Long> actorIds) {
+        return movieService.getByAtLeastOneActor(actorIds);
     }
 
 }
