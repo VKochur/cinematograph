@@ -23,11 +23,22 @@ public class TagDaoImpl extends BasicDaoImpl<Tag> implements TagDao {
     public List<Tag> findByIdsAndOrderByName(List<Long> existedTagIds) {
         String pql =
                 "select t" +
-                " from Tag t" +
-                " where t.id in :ids" +
-                " order by t.name";
+                        " from Tag t" +
+                        " where t.id in :ids" +
+                        " order by t.name";
         TypedQuery<Tag> query = entityManager.createQuery(pql, Tag.class);
         query.setParameter("ids", existedTagIds);
         return query.getResultList();
+    }
+
+    @Override
+    public List<Tag> findAllAndOrderByName(Boolean asc) {
+        String pql =
+                "select t" +
+                        " from Tag t" +
+                        " order by " +
+                        " t.name " +
+                        ((asc) ? "asc" : "desc");
+        return entityManager.createQuery(pql).getResultList();
     }
 }

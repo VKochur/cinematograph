@@ -7,4 +7,6 @@ import java.util.List;
 public interface TagDao extends BasicDao<Tag> {
 
     List<Tag> findByIdsAndOrderByName(List<Long> existedTagIds);
+
+    List<Tag> findAllAndOrderByName(Boolean asc);
 }
