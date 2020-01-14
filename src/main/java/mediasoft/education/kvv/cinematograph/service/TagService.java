@@ -17,7 +17,7 @@ public interface TagService {
     List<TagDto> findAllAndOrderByName(boolean asc);
 
     /**
-     * search tags, that have name like specific ignore case : %tagName%
+     * search tags, that have name like specific ignore case: %tagName%
      *
      * @param tagName
      * @return list ordered by name

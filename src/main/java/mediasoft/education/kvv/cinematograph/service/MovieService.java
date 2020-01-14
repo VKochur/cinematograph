@@ -85,7 +85,7 @@ public interface MovieService {
      * @return
      * @throws NoSuchElementException if movie not found
      */
-    MovieDto getById(Long id) throws NoSuchElementException;
+    MovieDto getById(Long id);
 
     /**
      * get all movies from db
@@ -99,7 +99,15 @@ public interface MovieService {
      * @return deleted movie
      * @throws NoSuchElementException if movies not found
      */
-    MovieDto deleteById(Long id) throws NoSuchElementException;
+    MovieDto deleteById(Long id);
+
+    /**
+     * get movies that have name like specific ignore case: %name%
+     *
+     * @param name
+     * @return list ordered by name
+     */
+    List<MovieDto> getBySimilarName(String name);
 
     /**
      * list movies, there movie contains at least one specific actor

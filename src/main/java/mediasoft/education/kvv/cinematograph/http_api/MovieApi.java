@@ -64,4 +64,11 @@ public class MovieApi {
         return movieService.removeTagsByIds(idMovie, tagIds);
     }
 
+    @GET
+    @Path("/name")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<MovieDto> getMoviesBySimilarName(@QueryParam("value") String name){
+        return movieService.getBySimilarName(name);
+    }
+
 }

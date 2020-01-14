@@ -233,6 +233,22 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    public List<MovieDto> getBySimilarName(String name) {
+        String FIELD_NAME = "name";
+        List<Movie> movies = movieDao.findWhereFieldLikeAsSpecificAndOrderByOther(FIELD_NAME,
+                "%" + name + "%",
+                true,
+                FIELD_NAME,
+                true);
+        List<MovieDto> movieDtos = new LinkedList<>();
+        movies.forEach(movie -> movieDtos.add(movieDtoMapper.getDto(movie)));
+        for (Movie movie : movies) {
+            movieDtos.add(movieDtoMapper.getDto(movie));
+        }
+        return movieDtos;
+    }
+
+    @Override
     public List<MovieDto> getByAtLeastOneActor(List<Long> actorIds) {
         throw new NotSupportedException("not implements yet");
     }
