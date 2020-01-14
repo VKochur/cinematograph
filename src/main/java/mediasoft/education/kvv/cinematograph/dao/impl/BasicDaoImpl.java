@@ -4,6 +4,7 @@ import mediasoft.education.kvv.cinematograph.dao.BasicDao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -53,6 +54,20 @@ public class BasicDaoImpl<T> implements BasicDao<T> {
     public T create(T entity) {
         em.persist(entity);
         return entity;
+    }
+
+    @Override
+    public List<T> findWhereFieldLikeAsSpecificAndOrderByOther(String fieldName, String fieldValue, boolean caseIgnore, String forSortFieldName, boolean asc) {
+        String clazzName = entityClass.getSimpleName();
+
+        String from = " select e  from " + clazzName + " e ";
+        String where = ((caseIgnore)? ("where UPPER(e."+fieldName+")") : ("where e." + fieldName)) + " like :fieldValue";
+        String order = " order by e." + forSortFieldName + " " + ((asc)? "asc" : "desc");
+
+        Query query = em.createQuery(from + where + order);
+
+        query.setParameter("fieldValue", (caseIgnore)? fieldValue.toUpperCase() : fieldValue);
+        return query.getResultList();
     }
 }
 

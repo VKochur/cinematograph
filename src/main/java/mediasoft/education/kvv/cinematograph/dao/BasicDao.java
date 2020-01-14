@@ -40,4 +40,23 @@ public interface BasicDao<T> {
      * @param entity deleted
      */
     T delete(T entity);
+
+    /**
+     * get list entity
+     *
+     * use query like:
+     * ----
+     * select entity
+     * where fieldValue like fieldName
+     * order by forSortFieldName
+     * -----
+     *
+     * @param fieldName
+     * @param fieldValue
+     * @param caseIgnore ignore case in "where"
+     * @param forSortFieldName
+     * @param asc for sort
+     * @return
+     */
+    List<T> findWhereFieldLikeAsSpecificAndOrderByOther(String fieldName, String fieldValue, boolean caseIgnore, String forSortFieldName, boolean asc);
 }
