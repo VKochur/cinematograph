@@ -19,7 +19,6 @@ import mediasoft.education.kvv.cinematograph.service.MovieService;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import javax.ws.rs.NotSupportedException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -254,7 +253,10 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<MovieDto> getByAllTag(List<Long> tagIds) {
-        throw new NotSupportedException("not implements yet");
+        List<Movie> byAllTags = movieDao.getByAllTags(tagIds);
+        List<MovieDto> movieDtos = new LinkedList<>();
+        byAllTags.forEach(movie -> movieDtos.add(movieDtoMapper.getDto(movie)));
+        return movieDtos;
     }
 
 }

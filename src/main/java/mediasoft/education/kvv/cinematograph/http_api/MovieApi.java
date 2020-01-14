@@ -79,4 +79,12 @@ public class MovieApi {
         return movieService.getByAtLeastOneActor(actorIds);
     }
 
+    @PUT
+    @Path("/getByTags")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<MovieDto> getMoviesByTags(List<Long> tagIds) {
+        return movieService.getByAllTag(tagIds);
+    }
+
 }

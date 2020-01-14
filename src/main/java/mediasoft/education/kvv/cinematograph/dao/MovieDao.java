@@ -8,4 +8,6 @@ import java.util.List;
 public interface MovieDao extends BasicDao<Movie>{
 
     List<Movie> getByAtLeastOneActor(List<Long> actorIds);
+
+    List<Movie> getByAllTags(List<Long> tagIds);
 }
