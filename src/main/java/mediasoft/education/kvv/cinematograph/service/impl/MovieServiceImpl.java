@@ -3,13 +3,16 @@ package mediasoft.education.kvv.cinematograph.service.impl;
 import mediasoft.education.kvv.cinematograph.dao.ActorDao;
 import mediasoft.education.kvv.cinematograph.dao.CommentDao;
 import mediasoft.education.kvv.cinematograph.dao.MovieDao;
+import mediasoft.education.kvv.cinematograph.dao.TagDao;
 import mediasoft.education.kvv.cinematograph.dto.CommentDto;
 import mediasoft.education.kvv.cinematograph.dto.MovieDto;
+import mediasoft.education.kvv.cinematograph.dto.TagDto;
 import mediasoft.education.kvv.cinematograph.dto.mapper.DtoMapper;
 import mediasoft.education.kvv.cinematograph.dto.mapper.MovieDtoMapper;
 import mediasoft.education.kvv.cinematograph.entity.Actor;
 import mediasoft.education.kvv.cinematograph.entity.Comment;
 import mediasoft.education.kvv.cinematograph.entity.Movie;
+import mediasoft.education.kvv.cinematograph.entity.Tag;
 import mediasoft.education.kvv.cinematograph.service.CommentService;
 import mediasoft.education.kvv.cinematograph.service.MovieService;
 
@@ -36,6 +39,10 @@ public class MovieServiceImpl implements MovieService {
     private CommentDao commentDao;
 
     private DtoMapper<Comment, CommentDto> commentDtoMapper;
+
+    private TagDao tagDao;
+
+    private DtoMapper<Tag, TagDto> tagTagDtoDtoMapper;
 
     @Inject
     public void setMovieDao(MovieDao movieDao) {
@@ -65,6 +72,16 @@ public class MovieServiceImpl implements MovieService {
     @Inject
     public void setCommentDtoMapper(DtoMapper<Comment, CommentDto> commentDtoMapper) {
         this.commentDtoMapper = commentDtoMapper;
+    }
+
+    @Inject
+    public void setTagDao(TagDao tagDao) {
+        this.tagDao = tagDao;
+    }
+
+    @Inject
+    public void setTagTagDtoDtoMapper(DtoMapper<Tag, TagDto> tagTagDtoDtoMapper) {
+        this.tagTagDtoDtoMapper = tagTagDtoDtoMapper;
     }
 
     @Override
@@ -160,12 +177,30 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public MovieDto addTagsByIds(Long existedMovieId, List<Long> existedTagIds) {
-        throw new NotSupportedException("not implements yet");
+        Movie movie = movieDao.getById(existedMovieId);
+        if (movie == null) {
+            throw new NoSuchElementException("not found movie by id = " + existedMovieId);
+        } else {
+            List<Tag> byIdsAndOrderByName = tagDao.findByIdsAndOrderByName(existedTagIds);
+            for (Tag tag : byIdsAndOrderByName) {
+                movie.addTag(tag);
+            }
+            return movieDtoMapper.getDto(movie);
+        }
     }
 
     @Override
     public MovieDto removeTagsByIds(Long existedMovieId, List<Long> existedTagIds) {
-        throw new NotSupportedException("not implements yet");
+        Movie movie = movieDao.getById(existedMovieId);
+        if (movie == null) {
+            throw new NoSuchElementException("not found movie by id = " + existedMovieId);
+        } else {
+            List<Tag> byIdsAndOrderByName = tagDao.findByIdsAndOrderByName(existedTagIds);
+            for (Tag tag : byIdsAndOrderByName) {
+                movie.removeTag(tag);
+            }
+            return movieDtoMapper.getDto(movie);
+        }
     }
 
     @Override
