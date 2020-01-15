@@ -1,4 +1,4 @@
-package mediasoft.education.kvv.cinematograph.rest;
+package mediasoft.education.kvv.cinematograph.api.rest;
 
 import mediasoft.education.kvv.cinematograph.dto.TagDto;
 import mediasoft.education.kvv.cinematograph.service.TagService;

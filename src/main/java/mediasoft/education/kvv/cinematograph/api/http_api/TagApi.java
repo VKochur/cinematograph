@@ -1,4 +1,4 @@
-package mediasoft.education.kvv.cinematograph.http_api;
+package mediasoft.education.kvv.cinematograph.api.http_api;
 
 import mediasoft.education.kvv.cinematograph.dto.TagDto;
 import mediasoft.education.kvv.cinematograph.service.TagService;
