@@ -1,19 +1,25 @@
 package mediasoft.education.kvv.cinematograph.servlet;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "HelloServlet", urlPatterns = "/hello")
+@WebServlet(name = "HelloServlet", urlPatterns = "/app")
 public class HelloServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ServletOutputStream outputStream = resp.getOutputStream();
-        outputStream.println("hello from app");
+
+        String path = "jsp/tags.jsp";
+        req.getRequestDispatcher(path).forward(req, resp);
     }
+
+    @Override
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("jsp/form.jsp").forward(req, resp);
+    }
+
 }
