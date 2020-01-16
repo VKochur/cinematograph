@@ -21,7 +21,7 @@ public class MovieDaoImpl extends BasicDaoImpl<Movie> implements MovieDao {
 
     @Override
     public List<Movie> getByAtLeastOneActor(List<Long> actorIds) {
-        String pql = "select m " +
+        String pql = "select distinct m " +
                 "from Movie m " +
                 "join m.actors a " +
                 "where a.id in :actorIds";

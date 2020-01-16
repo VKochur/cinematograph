@@ -19,6 +19,7 @@ import mediasoft.education.kvv.cinematograph.service.MovieService;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -242,19 +243,27 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<MovieDto> getByAtLeastOneActor(List<Long> actorIds) {
-        List<Movie> byAtLeastOneActor = movieDao.getByAtLeastOneActor(actorIds);
-        List<MovieDto> movieDtos = new LinkedList<>();
-        byAtLeastOneActor.forEach(movie -> movieDtos.add(movieDtoMapper.getDto(movie)));
-        return movieDtos;
+        if (actorIds.isEmpty()) {
+            return Collections.emptyList();
+        } else {
+            List<Movie> byAtLeastOneActor = movieDao.getByAtLeastOneActor(actorIds);
+            List<MovieDto> movieDtos = new LinkedList<>();
+            byAtLeastOneActor.forEach(movie -> movieDtos.add(movieDtoMapper.getDto(movie)));
+            return movieDtos;
+        }
     }
 
 
     @Override
     public List<MovieDto> getByAtLeastOneTag(List<Long> tagIds) {
-        List<Movie> byAllTags = movieDao.getByAtLeastOneTag(tagIds);
-        List<MovieDto> movieDtos = new LinkedList<>();
-        byAllTags.forEach(movie -> movieDtos.add(movieDtoMapper.getDto(movie)));
-        return movieDtos;
+        if (tagIds.isEmpty()) {
+            return Collections.emptyList();
+        } else {
+            List<Movie> byAllTags = movieDao.getByAtLeastOneTag(tagIds);
+            List<MovieDto> movieDtos = new LinkedList<>();
+            byAllTags.forEach(movie -> movieDtos.add(movieDtoMapper.getDto(movie)));
+            return movieDtos;
+        }
     }
 
     @Override

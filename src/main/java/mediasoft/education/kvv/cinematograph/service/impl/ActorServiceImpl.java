@@ -80,4 +80,18 @@ public class ActorServiceImpl implements ActorService {
         list.forEach(actor -> actorDtos.add(actorDtoMapper.getDto(actor)));
         return actorDtos;
     }
+
+    @Override
+    public List<ActorDto> getBySimilarName(String actorName) {
+        String FIELD_NAME = "name";
+        List<Actor> actors = actorDao.findWhereFieldLikeAsSpecificAndOrderByOther(
+                FIELD_NAME,
+                "%"+actorName+"%",
+                true,
+                FIELD_NAME,
+                true);
+        List<ActorDto> actorDtos = new LinkedList<>();
+        actors.forEach(actor -> actorDtos.add(actorDtoMapper.getDto(actor)));
+        return actorDtos;
+    }
 }
