@@ -23,4 +23,6 @@ public interface TagService {
      * @return list ordered by name
      */
     List<TagDto> findWithNameLikeAs(String tagName);
+
+    TagDto getByName(String name);
 }

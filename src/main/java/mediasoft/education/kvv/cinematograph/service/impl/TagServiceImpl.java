@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Transactional
 @Stateless
@@ -82,5 +83,19 @@ public class TagServiceImpl implements TagService {
             tagDtos.add(tagDtoMapper.getDto(tag));
         }
         return tagDtos;
+    }
+
+    @Override
+    public TagDto getByName(String name) {
+        if (tagDao instanceof TagDao) {
+            Tag byName = ((TagDao) tagDao).getByName(name);
+            if (byName == null) {
+                throw new NoSuchElementException("not found tag by name = " + name);
+            } else {
+                return tagDtoMapper.getDto(byName);
+            }
+        } else {
+            throw new IllegalStateException("if your " + tagDao.getClass().getName() + " implements BasicDao<Tag>, you must extend your implementation by TagDao too");
+        }
     }
 }

@@ -33,6 +33,17 @@ public class MovieDaoImpl extends BasicDaoImpl<Movie> implements MovieDao {
     }
 
     @Override
+    public List<Movie> getByAtLeastOneTag(List<Long> tagIds) {
+        String pql = "select distinct m " +
+                "from Movie m " +
+                "join m.tags t " +
+                "where t.id in :tagIds";
+        Query query = entityManager.createQuery(pql);
+        query.setParameter("tagIds", tagIds);
+        return query.getResultList();
+    }
+
+    @Override
     public List<Movie> getByAllTags(List<Long> tagIds) {
         /*
         String pql = "select m " +

@@ -251,6 +251,15 @@ public class MovieServiceImpl implements MovieService {
         return movieDtos;
     }
 
+
+    @Override
+    public List<MovieDto> getByAtLeastOneTag(List<Long> tagIds) {
+        List<Movie> byAllTags = movieDao.getByAtLeastOneTag(tagIds);
+        List<MovieDto> movieDtos = new LinkedList<>();
+        byAllTags.forEach(movie -> movieDtos.add(movieDtoMapper.getDto(movie)));
+        return movieDtos;
+    }
+
     @Override
     public List<MovieDto> getByAllTag(List<Long> tagIds) {
         List<Movie> byAllTags = movieDao.getByAllTags(tagIds);
