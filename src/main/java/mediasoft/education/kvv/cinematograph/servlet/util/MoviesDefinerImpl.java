@@ -1,8 +1,10 @@
 package mediasoft.education.kvv.cinematograph.servlet.util;
 
 
+import mediasoft.education.kvv.cinematograph.dto.ActorDto;
 import mediasoft.education.kvv.cinematograph.dto.MovieDto;
 import mediasoft.education.kvv.cinematograph.dto.TagDto;
+import mediasoft.education.kvv.cinematograph.service.ActorService;
 import mediasoft.education.kvv.cinematograph.service.MovieService;
 import mediasoft.education.kvv.cinematograph.service.TagService;
 import mediasoft.education.kvv.cinematograph.util.Pair;
@@ -20,6 +22,7 @@ public class MoviesDefinerImpl implements MoviesDefiner {
 
     private final String ID_MOVIE_PARAM = "movie_id";
     private final String MOVIE_NAME_PARAM = "movie_name_contains";
+    private final String ACTOR_NAME_PARAM = "actor_name_contains";
     private final String TAGS_PARAM = "tags";
 
     @Inject
@@ -27,6 +30,9 @@ public class MoviesDefinerImpl implements MoviesDefiner {
 
     @Inject
     private TagService tagService;
+
+    @Inject
+    private ActorService actorService;
 
     //todo: simplify (if..)
     @Override
@@ -58,6 +64,18 @@ public class MoviesDefinerImpl implements MoviesDefiner {
         }
 
 
+        String[] actorNames = req.getParameterMap().get(ACTOR_NAME_PARAM);
+        if (actorNames != null) {
+            String actorName = actorNames[0];
+            List<ActorDto> bySimilarName = actorService.getBySimilarName(actorName);
+            List<Long> actorIds = new LinkedList<>();
+            bySimilarName.forEach(actorDto -> actorIds.add(actorDto.getId()));
+            info.append("\n " + "movies, whose actor's name's contains '" + actorName +"'");
+            List<MovieDto> byAtLeastOneActor = movieService.getByAtLeastOneActor(actorIds);
+            return new Pair<>(info.toString(), byAtLeastOneActor);
+        }
+
+
         String[] tagsParam = req.getParameterMap().get(TAGS_PARAM);
         if (tagsParam != null) {
             String DELIMETER = ",";
@@ -84,8 +102,8 @@ public class MoviesDefinerImpl implements MoviesDefiner {
     }
 
 
-    private Pair<String,List<MovieDto>> defaulListMovies(HttpServletRequest req) {
+    private Pair<String, List<MovieDto>> defaulListMovies(HttpServletRequest req) {
         return new Pair("No movies.\n" +
-                " Can't process query: '" +  req.getQueryString()+ "'", Collections.EMPTY_LIST);
+                " Can't process query: '" + req.getQueryString() + "'", Collections.EMPTY_LIST);
     }
 }
