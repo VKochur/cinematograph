@@ -7,8 +7,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.ws.rs.NotSupportedException;
-import java.util.LinkedList;
 import java.util.List;
 
 @Stateless

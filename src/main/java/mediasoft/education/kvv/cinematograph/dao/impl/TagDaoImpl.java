@@ -48,7 +48,7 @@ public class TagDaoImpl extends BasicDaoImpl<Tag> implements TagDao {
         String pql =
                 "select t" +
                         " from Tag t" +
-                        "where t.name =:name";
+                        " where t.name = :name";
 
         Query query = entityManager.createQuery(pql, Tag.class);
         query.setParameter("name", tagName);
