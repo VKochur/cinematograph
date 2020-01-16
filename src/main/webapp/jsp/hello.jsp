@@ -5,9 +5,14 @@
     <title>Hello cinematograph</title>
 </head>
 <body>
-    <h3>It's jsp page!</h3>
+    <h3>It's hello page!</h3>
     <br>
-    You can see api at
+    You can see api at,
     <a href="/cinematograph/docs/">cinematograph/docs/</a>
+    <br>
+    and use it to CRUD info (movies, actors, tags, comments)
+    <br>
+    <br>
+    You can search movies at <a href="/cinematograph/movie">/cinematograph/movie</a> also
 </body>
 </html>
