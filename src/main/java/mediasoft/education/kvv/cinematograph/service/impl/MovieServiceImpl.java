@@ -237,9 +237,6 @@ public class MovieServiceImpl implements MovieService {
                 true);
         List<MovieDto> movieDtos = new LinkedList<>();
         movies.forEach(movie -> movieDtos.add(movieDtoMapper.getDto(movie)));
-        for (Movie movie : movies) {
-            movieDtos.add(movieDtoMapper.getDto(movie));
-        }
         return movieDtos;
     }
 
