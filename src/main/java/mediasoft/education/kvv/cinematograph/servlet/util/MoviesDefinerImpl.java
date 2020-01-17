@@ -9,6 +9,7 @@ import mediasoft.education.kvv.cinematograph.service.MovieService;
 import mediasoft.education.kvv.cinematograph.service.TagService;
 import mediasoft.education.kvv.cinematograph.util.Pair;
 
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +35,7 @@ public class MoviesDefinerImpl implements MoviesDefiner {
     @Inject
     private ActorService actorService;
 
-    //todo: simplify (if..)
+    //todo: simplify (if.., several return)
     @Override
     public Pair<String, List<MovieDto>> defineMovies(HttpServletRequest req) {
         StringBuilder info = new StringBuilder();
@@ -43,15 +44,21 @@ public class MoviesDefinerImpl implements MoviesDefiner {
         if (stringsMovieIds != null) {
             String idMovie = stringsMovieIds[0];
             try {
-                long id = Long.parseLong(idMovie);
+                long id =  Long.parseLong(idMovie);
                 MovieDto byId = movieService.getById(id);
                 info.append("movies by id = " + idMovie);
                 return new Pair(info.toString(), Arrays.asList(byId));
             } catch (NumberFormatException e) {
-                //wrong data, do nothing.
-                info.append("wrong format movie's id = " + idMovie);
+                //wrong data
+                return new Pair<>("wrong format movie's id = " + idMovie, Collections.EMPTY_LIST);
             } catch (NoSuchElementException e) {
                 info.append("not found movie by id = " + idMovie);
+            } catch (EJBException e) {
+                 if (e.getCausedByException() instanceof NoSuchElementException) {
+                     return new Pair<>("not found movie by id = " + idMovie, Collections.EMPTY_LIST);
+                 } else {
+                     throw e;
+                 }
             }
         }
 
