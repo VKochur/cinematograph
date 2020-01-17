@@ -83,10 +83,4 @@ public class MovieServlet extends HttpServlet {
     private Pair<String, List<MovieDto>> defineMovies(HttpServletRequest req) {
         return moviesDefiner.defineMovies(req);
     }
-
-    @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("jsp/form.jsp").forward(req, resp);
-    }
-
 }
