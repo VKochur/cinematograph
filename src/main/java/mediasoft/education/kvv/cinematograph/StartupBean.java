@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
+import java.time.LocalDateTime;
 
 @Startup
 @Singleton
@@ -64,14 +65,19 @@ public class StartupBean {
 
         Comment parentComment = new Comment();
         parentComment.setText("Отличный фильм!");
+        parentComment.setDateTime(LocalDateTime.now().minusDays(2));
         Comment childComment = new Comment();
         parentComment.addChild(childComment);
         childComment.setText("Поддерживаю");
+        childComment.setDateTime(LocalDateTime.now().minusDays(1));
         Comment grandChild = new Comment();
         childComment.addChild(grandChild);
+        childComment.setDateTime(LocalDateTime.now().minusMinutes(23));
         grandChild.setText("+1");
+        grandChild.setDateTime(LocalDateTime.now());
         Comment parentComment2 = new Comment();
         parentComment2.setText("Бриллиантовая рука и костянная нога");
+        parentComment2.setDateTime(LocalDateTime.now());
         movies[0].addComment(parentComment);
         movies[0].addComment(parentComment2);
 

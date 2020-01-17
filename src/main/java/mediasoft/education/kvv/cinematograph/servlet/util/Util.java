@@ -33,8 +33,11 @@ public class Util {
             commentDtosOrderedByDate.add(commentService.getById(commentsId));
         }
         Collections.sort(commentDtosOrderedByDate, (o1, o2) -> {
-            if (o1 == null || o2 == null) return 0;
-            if (o1.getDateTime() == null) return 1;
+            //todo такое переопределение не гарантирует выполнение транзитивности,
+            //A = null & B = null => A=B, что на самом деле не факт.
+            //в данном моменте подходит, т.к. null даты не ожидаются, но стоит пересмотреть
+            if (o1 == null) {if  (o2 == null) return 0;}
+            if (o1.getDateTime() == null || o2.getDateTime() == null) return 0;
             return o1.getDateTime().compareTo(o2.getDateTime());
         });
 
