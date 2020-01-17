@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 
 @WebServlet(name = "ActorServlet", urlPatterns = "/actor")
@@ -25,7 +24,7 @@ public class ActorServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String[] params = req.getParameterMap().get(ACTOR_NAME);
-        List<ActorDto> actorDtoList = new LinkedList<>();
+        List<ActorDto> actorDtoList;
         String infoAboutResolveActorList;
         if (params != null) {
             String partOfActorName = params[0];

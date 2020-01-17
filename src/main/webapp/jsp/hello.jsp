@@ -15,5 +15,6 @@
     <br>
     You can search movies at <a href="/cinematograph/movie">/cinematograph/movie</a><br>
     You can search actors at <a href="/cinematograph/actor">/cinematograph/actor</a><br>
+    You can see tags at <a href="/cinematograph/tag">/cinematograph/tag</a><br>
 </body>
 </html>
