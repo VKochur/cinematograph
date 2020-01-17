@@ -116,6 +116,14 @@ public interface MovieService {
      */
     List<MovieDto> getByAtLeastOneActor(List<Long> actorIds);
 
+
+    /**
+     * list movies, there movie contains at least one specific tag
+     * @param tagIds
+     * @return
+     */
+    List<MovieDto> getByAtLeastOneTag(List<Long> tagIds);
+
     /**
      * list movies, there movie contains all specific tags
      * @param tagIds

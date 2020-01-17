@@ -7,8 +7,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.ws.rs.NotSupportedException;
-import java.util.LinkedList;
 import java.util.List;
 
 @Stateless
@@ -23,12 +21,23 @@ public class MovieDaoImpl extends BasicDaoImpl<Movie> implements MovieDao {
 
     @Override
     public List<Movie> getByAtLeastOneActor(List<Long> actorIds) {
-        String pql = "select m " +
+        String pql = "select distinct m " +
                 "from Movie m " +
                 "join m.actors a " +
                 "where a.id in :actorIds";
         Query query = entityManager.createQuery(pql);
         query.setParameter("actorIds", actorIds);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Movie> getByAtLeastOneTag(List<Long> tagIds) {
+        String pql = "select distinct m " +
+                "from Movie m " +
+                "join m.tags t " +
+                "where t.id in :tagIds";
+        Query query = entityManager.createQuery(pql);
+        query.setParameter("tagIds", tagIds);
         return query.getResultList();
     }
 

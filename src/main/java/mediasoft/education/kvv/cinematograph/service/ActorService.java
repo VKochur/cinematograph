@@ -40,4 +40,12 @@ public interface ActorService {
      * @return
      */
     List<ActorDto> findAll();
+
+    /**
+     * search actors, that have name like specific ignore case: %actorName%
+     *
+     * @param actorName
+     * @return list ordered by name
+     */
+    List<ActorDto> getBySimilarName(String actorName);
 }

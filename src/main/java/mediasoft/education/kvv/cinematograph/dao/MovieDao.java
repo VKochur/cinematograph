@@ -9,5 +9,7 @@ public interface MovieDao extends BasicDao<Movie>{
 
     List<Movie> getByAtLeastOneActor(List<Long> actorIds);
 
+    List<Movie> getByAtLeastOneTag(List<Long> tagIds);
+
     List<Movie> getByAllTags(List<Long> tagIds);
 }

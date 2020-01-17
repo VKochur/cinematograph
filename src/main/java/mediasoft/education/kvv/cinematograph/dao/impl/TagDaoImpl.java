@@ -6,6 +6,7 @@ import mediasoft.education.kvv.cinematograph.entity.Tag;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -40,5 +41,22 @@ public class TagDaoImpl extends BasicDaoImpl<Tag> implements TagDao {
                         " t.name " +
                         ((asc) ? "asc" : "desc");
         return entityManager.createQuery(pql).getResultList();
+    }
+
+    @Override
+    public Tag getByName(String tagName) {
+        String pql =
+                "select t" +
+                        " from Tag t" +
+                        " where t.name = :name";
+
+        Query query = entityManager.createQuery(pql, Tag.class);
+        query.setParameter("name", tagName);
+        List<Tag> resultList = query.getResultList();
+        if (resultList.isEmpty()) {
+            return null;
+        } else {
+            return resultList.get(0);
+        }
     }
 }
