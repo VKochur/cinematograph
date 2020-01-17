@@ -24,7 +24,7 @@ http api для редактирования данных, jsp для отобр
 <br>
 https://wildfly.org/downloads/ 11.0.0.Final	2017-10-23	Java EE Full & Web Distribution
 
-###Проведеная настройка:
+### Проведеная настройка:
 1.установка postgre по умолчанию. создание бд cinematograph
 <br>
 2.в папке
@@ -75,4 +75,5 @@ module.xml
  4. wildfly-11.0.0.Final\bin\standalone.bat
  <br>
  http://localhost:9990/console/App.html#standalone-deployments деплоймент приложения
-
+<br>
+папка wildFly содержит примеры
