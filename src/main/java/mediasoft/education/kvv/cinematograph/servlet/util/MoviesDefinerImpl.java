@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
- *
+ *todo: exception handing have to improve. need rework
  */
 @Stateless
 public class MoviesDefinerImpl implements MoviesDefiner {
@@ -94,9 +94,14 @@ public class MoviesDefinerImpl implements MoviesDefiner {
                     TagDto byName = tagService.getByName(tagName);
                     tagIds.add(byName.getId());
                     info.append("defined tag = ").append(byName.getName()).append("\n");
-                } catch (NoSuchElementException e) {
-                    //not found by tag's name
-                    //see next
+                } catch (EJBException e) {
+                    if (e.getCausedByException() instanceof NoSuchElementException) {
+                        //not found by tag's name
+                        //see next
+                    } else {
+                        //todo fix:  exists, if tagParam = Комедия,Боев1ик
+                        throw e;
+                    }
                 }
             }
 
