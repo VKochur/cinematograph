@@ -90,18 +90,19 @@ public class MoviesDefinerImpl implements MoviesDefiner {
             List<Long> tagIds = new LinkedList<>();
             info.append("try get by tags:" + Arrays.toString(tags)).append("\n");
             for (String tagName : tags) {
-                try {
-                    TagDto byName = tagService.getByName(tagName);
-                    tagIds.add(byName.getId());
-                    info.append("defined tag = ").append(byName.getName()).append("\n");
-                } catch (EJBException e) {
-                    if (e.getCausedByException() instanceof NoSuchElementException) {
-                        //not found by tag's name
-                        //see next
-                    } else {
-                        //todo fix:  exists, if tagParam = Комедия,Боев1ик
-                        throw e;
-                    }
+                        try {
+                            TagDto byName = tagService.getByName(tagName);
+                            tagIds.add(byName.getId());
+                            info.append("defined tag = ").append(byName.getName()).append("\n");
+                        } catch (EJBException e) {
+                            if (e.getCausedByException() instanceof NoSuchElementException) {
+                                //not found by tag's name
+                                //see next
+                                //but transaction dosn't exists here!
+                            } else {
+                                //todo fix:  exists, if tagParam = Комедия,Боев1ик
+                                throw e;
+                            }
                 }
             }
 

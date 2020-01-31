@@ -43,15 +43,16 @@ public class MovieDaoImpl extends BasicDaoImpl<Movie> implements MovieDao {
 
     @Override
     public List<Movie> getByAllTags(List<Long> tagIds) {
-        /*
         String pql = "select m " +
                 "from Movie m " +
                 "join m.tags t " +
-                "where not exists t.id not in (select)";
+                "where t.id in :tagIds " +
+                "group by m " +
+                "having count(m) = :countTags " +
+                "order by m.name";
         Query query = entityManager.createQuery(pql);
-        query.setParameter("actorIds", actorIds);
+        query.setParameter("tagIds", tagIds);
+        query.setParameter("countTags", tagIds.size());
         return query.getResultList();
-         */
-        throw new IllegalStateException("not implemented yet");
     }
 }
